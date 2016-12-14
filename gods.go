@@ -23,22 +23,21 @@ import (
 )
 
 const (
-	bpsSign   = "á"
-	kibpsSign = "â"
-	mibpsSign = "ã"
+	bpsSign   = " bps"
+	kibpsSign = " kibps"
+	mibpsSign = " mibps"
 
-	unpluggedSign = "è"
-	pluggedSign   = "é"
+	unpluggedSign = "✘"
+	pluggedSign   = "✓"
 
-	cpuSign = "Ï"
-	memSign = "Þ"
+	cpuSign = "cpu"
+	memSign = "mem"
 
-	netReceivedSign    = "Ð"
-	netTransmittedSign = "Ñ"
+	netReceivedSign    = "rec "
+	netTransmittedSign = "trans "
 
-	floatSeparator = "à"
-	dateSeparator  = "Ý"
-	fieldSeparator = "û"
+	floatSeparator = "."
+	fieldSeparator = " | "
 )
 
 var (
@@ -127,11 +126,11 @@ func updatePower() string {
 	var enFull, enNow, enPerc int = 0, 0, 0
 	var plugged, err = ioutil.ReadFile(powerSupply + "AC/online")
 	if err != nil {
-		return "ÏERR"
+		return "batERR"
 	}
 	batts, err := ioutil.ReadDir(powerSupply)
 	if err != nil {
-		return "ÏERR"
+		return "batERR"
 	}
 
 	readval := func(name, field string) int {
@@ -229,6 +228,10 @@ func updateMemUse() string {
 
 // main updates the dwm statusbar every second
 func main() {
+	hostname, err := os.Hostname()
+	if err != nil {
+		hostname = err.Error()
+	}
 	for {
 		var status = []string{
 			"",
@@ -236,9 +239,9 @@ func main() {
 			updateCPUUse(),
 			updateMemUse(),
 			updatePower(),
-			time.Now().Local().Format("Mon 02 " + dateSeparator + " 15:04:05"),
+			time.Now().Local().Format("Mon 2006-01-02 15:04:05"),
 		}
-		exec.Command("xsetroot", "-name", strings.Join(status, fieldSeparator)).Run()
+		exec.Command("xsetroot", "-name", hostname + strings.Join(status, fieldSeparator)).Run()
 
 		// sleep until beginning of next second
 		var now = time.Now()
