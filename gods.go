@@ -33,8 +33,8 @@ const (
 	cpuSign = "cpu"
 	memSign = "mem"
 
-	netReceivedSign    = "⇣"
-	netTransmittedSign = "⇡"
+	netReceivedSign    = "⇣ "
+	netTransmittedSign = "⇡ "
 
 	floatSeparator = "."
 	fieldSeparator = " | "
