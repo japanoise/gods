@@ -33,8 +33,8 @@ const (
 	cpuSign = "cpu"
 	memSign = "mem"
 
-	netReceivedSign    = "rec "
-	netTransmittedSign = "trans "
+	netReceivedSign    = "⇣"
+	netTransmittedSign = "⇡"
 
 	floatSeparator = "."
 	fieldSeparator = " | "
@@ -42,10 +42,10 @@ const (
 
 var (
 	netDevs = map[string]struct{}{
-		"eth0:": {},
-		"eth1:": {},
+		"eth0:":  {},
+		"eth1:":  {},
 		"wlan0:": {},
-		"ppp0:": {},
+		"ppp0:":  {},
 	}
 	cores = runtime.NumCPU() // count of cores to scale cpu usage
 	rxOld = 0
@@ -241,7 +241,7 @@ func main() {
 			updatePower(),
 			time.Now().Local().Format("Mon 2006-01-02 15:04:05"),
 		}
-		exec.Command("xsetroot", "-name", hostname + strings.Join(status, fieldSeparator)).Run()
+		exec.Command("xsetroot", "-name", hostname+strings.Join(status, fieldSeparator)).Run()
 
 		// sleep until beginning of next second
 		var now = time.Now()
